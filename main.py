@@ -6,7 +6,8 @@ import threading
 import time
 import jinja2
 
-client = MongoClient('mongodb+srv://KING7077:ncfe2349@cluster0.v21xb.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient(
+    'mongodb+srv://KING7077:ncfe2349@cluster0.v21xb.mongodb.net/?retryWrites=true&w=majority')
 db = client['userdata']
 
 
@@ -18,7 +19,8 @@ class App(Flask):
         self.route('/register')(self.signup)
         self.route('/app', methods=['GET', 'POST'])(self.mainapp)
         self.route('/app/<author>/<user>')(self.people)
-        self.route('/app/<author>/<user>/send', methods=['GET', 'POST'])(self.send)
+        self.route('/app/<author>/<user>/send',
+                   methods=['GET', 'POST'])(self.send)
         self.route('/app/search', methods=['GET', 'POST'])(self.search)
         self.user = None
         self.logins = {}
@@ -59,12 +61,14 @@ class App(Flask):
                     del self.logins[request.environ['HTTP_X_FORWARDED_FOR']]
                     self.logins[request.environ['HTTP_X_FORWARDED_FOR']] = uname
                     recent_users = collection2.find({'sender': uname})
-                    recent_users = [recent_user['receiver'] for recent_user in recent_users if recent_user['id'] =='actual']
+                    recent_users = [recent_user['receiver']
+                                    for recent_user in recent_users if recent_user['id'] == 'actual']
                     recent_users = list(set(recent_users))
                 except KeyError:
                     self.logins[request.environ['HTTP_X_FORWARDED_FOR']] = uname
                     recent_users = collection2.find({'sender': uname})
-                    recent_users = [recent_user['receiver'] for recent_user in recent_users if recent_user['id'] =='actual']
+                    recent_users = [recent_user['receiver']
+                                    for recent_user in recent_users if recent_user['id'] == 'actual']
                     recent_users = list(set(recent_users))
                 return render_template('app.html', uname=uname, recent_users=list(recent_users))
             else:
@@ -105,10 +109,13 @@ class App(Flask):
 
         collection = db['messages']
         collection2 = db['messages']
-        data = collection.find_one({'id': 'actual', 'sender': author, 'receiver': user})
-        data2 = collection.find_one({'id': 'actual', 'sender': user, 'receiver': author})
+        data = collection.find_one(
+            {'id': 'actual', 'sender': author, 'receiver': user})
+        data2 = collection.find_one(
+            {'id': 'actual', 'sender': user, 'receiver': author})
         recent_users = collection2.find({'sender': author})
-        recent_users = [recent_user['receiver'] for recent_user in recent_users if recent_user['id'] =='actual']
+        recent_users = [recent_user['receiver']
+                        for recent_user in recent_users if recent_user['id'] == 'actual']
         recent_users = list(set(recent_users))
 
         if data is not None and data['messages'] == data2['messages']:
@@ -116,15 +123,18 @@ class App(Flask):
             return render_template('user.html', user=author, receiver=user, messages=messages, recent_users=recent_users)
         else:
             messages = []
-            collection.insert_one({'id': 'actual', 'sender': author, 'receiver': user, 'messages': []})
-            collection.insert_one({'id': 'actual', 'sender': user, 'receiver': author, 'messages': []})
+            collection.insert_one(
+                {'id': 'actual', 'sender': author, 'receiver': user, 'messages': []})
+            collection.insert_one(
+                {'id': 'actual', 'sender': user, 'receiver': author, 'messages': []})
             return render_template('user.html', user=author, receiver=user, messages=messages, recent_users=recent_users)
 
     def send(self, author, user):
         collection = db['messages']
         request_ = request.form
         content = request_['text']
-        data = collection.find_one({'id': 'actual', 'sender': author, 'receiver': user})
+        data = collection.find_one(
+            {'id': 'actual', 'sender': author, 'receiver': user})
 
         if data is not None:
             messages = data['messages']
@@ -154,4 +164,3 @@ turbo = Turbo(app)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")
-	

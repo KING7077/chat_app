@@ -1,0 +1,5 @@
+pymongo[srv]
+quart
+flask
+gunicorn
+uvicorn
