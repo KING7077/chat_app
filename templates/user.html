@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Colloquy - {{receiver}}</title>
+		<link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/icons/favicon.ico')}}" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+		<style>
+
+			body, html {
+				height: 100%;
+			}
+			body{
+				background-color: #151b1f;	
+				overflow-x: hidden;
+				color: white;
+			}
+			.messagestuff{
+				position: absolute;
+				padding-top: 30px;
+				padding-bottom: 30px;
+				padding-right: 20px;
+				left: 350px;
+				top: 0;
+				overflow: auto;
+				width: calc(100% - 350px);
+			}
+			.leftelem {
+				position: fixed;
+				height: 100%;
+				background-color: black;
+				opacity: 0.8;
+				zoom: 0.9;
+			}
+			textarea[name=text] {
+			    resize: none;
+			    border: 0;
+				background-color: gray;
+			    border-radius: 5px;
+			    height: 40px;
+			    width: 90%;
+			    overflow-x: hidden;
+			  	font-size: 24px;
+				outline: none;
+				
+			}
+			textarea[name=text]::placeholder{
+				transform: translate(15px, 5px);
+				font-size: 18px;
+				color: black;
+			}
+			.messageform{
+				width: 100%;
+			}
+
+			#search-btn{
+				border-radius: 10px;
+			}
+		</style>
+    </head>
+    <body>
+        <div class="leftelem d-flex flex-column align-items-stretch flex-shrink-0" style="width: 360px; height: 100%; background-color: black; opacity: 0.8;">
+            <div class="container" style="padding-top: 20px">
+				<span class="fs-5 fw-semibold" style="color: white; text-align: left;">Search for people</span>
+				<p></p>
+                <form action="/app/search" method="POST">
+                    <input type="text" name="user" id="searched_user" required style="border-radius: 10px;"/>
+                    <input type="submit" value="Search" id="search-btn" />
+                </form>
+            </div>
+            <a class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none" style="padding-left: 0;">
+                <span class="fs-5 fw-semibold" style="color: white; text-align: left;">Recent Chats</span>
+            </a>
+            <div class="list-group list-group-flush scrollarea" style="background-color: black;">
+                {% for uname in recent_users %}
+                <a href="/app/{{user}}/{{uname}}" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true" style="background-color: black; border-color: black;">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong>{{uname}}</strong>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+		<div class="messagestuff">
+        <span id="messages">
+            {% for message in messages %} {% if message.split(':::')[0] == user %}
+            <b style="color: gray;">{{user}}</b>
+            {% elif message.split(':::')[0] == receiver %}
+            <b style="color: gray;">{{receiver}}</b>
+            {% endif %}
+            <p style="white-space: break-spaces;">{{''.join(message.split(':::')[1:])}}</p>
+            {% endfor %}
+        </span>
+        <form class="messageform" id="messageform">
+            <textarea type="text" rows=1 placeholder="Message @{{receiver}}" name="text" id="message" onkeypress="okop(event)" required></textarea>
+            <input type="submit" value="Send" id="sendmessage" />
+        </form>
+		</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script type="text/javascript">
+			$('#sendmessage').hide()
+            $(document).ready(function () {
+				var elem = document.getElementById('message')
+				var max = Math.max(
+				  document.body.scrollHeight, document.documentElement.scrollHeight,
+				  document.body.offsetHeight, document.documentElement.offsetHeight,
+				  document.body.clientHeight, document.documentElement.clientHeight
+				);
+				
+				window.scrollTo(max, max);
+            });
+
+			window.onresize = function () {
+				if(window.innerWidth <= 660){
+				alert("Please make the screen bigger for a better experience!")
+			}
+			};
+            function doThis() {
+                jQuery.ajax({
+                    url: window.location.href,
+                    success: function (data) {
+						if ($("#messages").html() == $(data).find("#messages").html()){
+							
+						}else{
+                        $("#messages").html($(data).find("#messages").html());
+						}
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    },
+                });
+            }
+
+			var textarea = document.getElementById('message')
+			textarea.oninput = function() {
+		    textarea.style.height = "";
+			  	/* textarea.style.height = Math.min(textarea.scrollHeight, 300) + "px"; */
+				var elem = document.getElementById('messagestuff')
+				var max = Math.max(
+				  document.body.scrollHeight, document.documentElement.scrollHeight,
+				  document.body.offsetHeight, document.documentElement.offsetHeight,
+				  document.body.clientHeight, document.documentElement.clientHeight
+				);
+				textarea.style.height = textarea.scrollHeight + "px"
+				window.scrollTo(max, max);
+			};
+			
+			function okop(event) {
+                // 13 is the keycode for "enter"
+                if (event.keyCode == 13 && event.shiftKey) {
+
+
+                }
+                if (event.keyCode == 13 && !event.shiftKey && $('#message').val().trim().length > 0) {
+					event.preventDefault()
+                    $('#messageform').submit()
+                }
+				if (event.keyCode == 13 && !event.shiftKey && $('#message').val().trim().length == 0) {
+					event.preventDefault()
+                }
+            }
+
+			$('#messageform').on('submit', function(event){
+				var message = $("#message").val()
+				$('#message').val('')
+				$('#message').css('height', '40px')
+				$.ajax({
+					type: 'POST',
+					url: window.location.href.split('?')[0] + '/send',
+					data: {text: message.trim()},
+					success: function(){
+						var divClone = $("#message").clone();
+						$('#message').val('')
+						$('#message').css('height', '40px')
+						
+					}
+				})
+				event.preventDefault()
+				
+		})
+
+
+            setInterval(doThis, 2000);
+            // doThis()
+        </script>
+    </body>
+</html>

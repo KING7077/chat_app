@@ -1,0 +1,41 @@
+			body, html {
+				height: 100%;
+			}
+			body{
+				background-color: #0e1517;	
+				color: white;
+				overflow-x: hidden;
+			}
+			.messagestuff{
+				height: 100%;
+				position: absolute;
+				padding-top: 30px;
+				padding-bottom: 30px;
+				padding-right: 20px;
+				left: 350px;
+				top: 0;
+				overflow: auto;
+			}
+			.leftelem {
+				position: fixed;
+				height: 100%;
+				background-color: black;
+				opacity: 0.8;
+				zoom: 0.9;
+			}
+			textarea[name=text] {
+			    width: 100%;
+			  	resize: none;
+			  	border: 0;
+			  	border-radius: 5px;
+			  	overflow-x: hidden;
+				font-size: 24px;
+			}
+			textarea[name=text]::placeholder{
+				transform: translate(15px, 5px);
+				font-size: 18px;
+			}
+
+			.messageform{
+				width: 100%;
+			}

@@ -1,0 +1,29 @@
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  background-color: gray;
+  color: black;
+  border-radius: 10px;
+  box-sizing: border-box;
+  opacity: 0.8;
+}
+
+input::placeholder{
+	color: white;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn:hover > button{
+		color: black;
+}
