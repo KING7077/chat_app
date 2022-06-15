@@ -153,7 +153,7 @@ class App(Flask):
         users = db['userdata']
         user_needed = users.find_one({'uname': user})
         if user_needed is None:
-            return redirect('/app')
+            return redirect(url)
         else:
             return redirect(f"/app/{self.logins[request.environ['HTTP_X_FORWARDED_FOR']]}/{user}")
 
