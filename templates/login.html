@@ -1,42 +1,80 @@
 <html>
-    <head>
-        <title>Colloquy</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="{{url_for('static', filename='styles/login.css')}}" />
-        <style>
-            body {
-                height: 100%;
-                background-image: url("https://images.unsplash.com/photo-1527492662722-dbaf97270863?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8c3RhcnJ5JTIwc2t5fGVufDB8fDB8fA%3D%3D&w=1000&q=80");
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-        </style>
-		<link rel="icon" type="image/x-icon" href="{{url_for('static', filename='images/icons/favicon.ico')}}" />
-    </head>
-    <body>
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);">
-            <div class="container h-100" style="padding-top: 55px;">
-                <form action="/app" method="POST" style="border-width: 0;">
-                    <b style="color: white;">Username:</b>
-                    <input type="text" placeholder="Enter Username" name="uname" required />
-                    <p></p>
-                    <b style="color: white;">Password:</b>
-                    <input type="password" placeholder="Enter Password" name="pass" required />
-                    <p></p>
-                    <div class="container d-flex align-items-center justify-content-center">
-                        <a role="button" class="btn btn-outline-light btn-lg"><button type="submit">Login</button></a>
-                    </div>
-                </form>
-					<div class="container d-flex align-items-center justify-content-center">
-                        <a role="button" href="/register" class="btn btn-outline-light"><button type="submit">Don't have an account? Get one!</button></a>
-                    </div>
-            </div>
+  <head>
+    <title>Colloquy</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='styles/login.css')}}"
+    />
+    <style>
+      body {
+        height: 100%;
+        background-image: url("https://images.unsplash.com/photo-1527492662722-dbaf97270863?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8c3RhcnJ5JTIwc2t5fGVufDB8fDB8fA%3D%3D&w=1000&q=80");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{url_for('static', filename='images/icons/favicon.ico')}}"
+    />
+  </head>
+  <body>
+    <div class="mask" style="background-color: rgba(0, 0, 0, 0.8)">
+      <div class="container h-100" style="padding-top: 55px">
+        <form action="/app" method="POST" style="border-width: 0">
+          {% if not error %}
+          <b style="color: white">Username:</b>
+          {% else %}
+          <b style="color: white">Username: {{ error }}</b>
+          <input
+            type="text"
+            placeholder="Enter Username"
+            name="uname"
+            required
+          />
+          <p></p>
+          {% if not error %}
+          <b style="color: white">Password:</b>
+          {% else %}
+          <b style="color: white"
+            >Password: <i style="color: red">{{ error }}</i></b
+          >
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="pass"
+            required
+          />
+          <p></p>
+          <div
+            class="container d-flex align-items-center justify-content-center"
+          >
+            <a role="button" class="btn btn-outline-light btn-lg"
+              ><button type="submit">Login</button></a
+            >
+          </div>
+        </form>
+        <div class="container d-flex align-items-center justify-content-center">
+          <a role="button" href="/register" class="btn btn-outline-light"
+            ><button type="submit">Don't have an account? Get one!</button></a
+          >
         </div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		<script>
-			
-		</script>
-    </body>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script></script>
+  </body>
 </html>

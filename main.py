@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import hashlib
 from turbo_flask import Turbo
@@ -27,7 +27,6 @@ class App(Flask):
         self.conversation_global = []
 
     def home(self):
-        print(request.remote_addr)
         return render_template('index.html')
 
     def login(self):
@@ -72,7 +71,7 @@ class App(Flask):
                     recent_users = list(set(recent_users))
                 return render_template('app.html', uname=uname, recent_users=list(recent_users))
             else:
-                return 'Nah, you ain\'t here'
+                return redirect(url_for('login', error="Invalid username or password"))
 
         elif ref[3] == 'register':
             hash_object = hashlib.sha256(bytes(passw, 'utf-8'))
@@ -98,9 +97,9 @@ class App(Flask):
             logged = None
 
         if author == user:
-            return 'You can\'t message yourself! Move back to the previous url and message someone valid'
+            return redirect('/app')
         if author != logged:
-            return 'You cannot access someone else\'s messages, sneaky bish'
+            return redirect('/app')
 
         users = db['userdata']
         user_needed = users.find_one({'uname': user})
