@@ -103,7 +103,9 @@ class App(Flask):
 
             return render_template('app.html', uname=uname, recent_users=list(recent_users))
         else:
-            return redirect('/login')
+            print(uname)
+            print(passw)
+            
             
 
     def people(self, author, user):
