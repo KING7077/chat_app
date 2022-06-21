@@ -53,7 +53,10 @@ class App(Flask):
         try:
             passw = request_['pass']
         except Exception as e:
-            passw = None
+            if ref[3] == 'app':
+                passw = 'Done'
+            else:
+                passw = None
             
 
         if ref[3] == 'login':
@@ -104,8 +107,14 @@ class App(Flask):
 
             return render_template('app.html', uname=uname, recent_users=list(recent_users))
         else:
-            print(uname)
-            print(passw)
+            if uname is None and passw is None:
+                return redirect('/login')
+            else:
+                recent_users = collection2.find({'sender': uname})
+                recent_users = [recent_user['receiver']
+                                for recent_user in recent_users if recent_user['id'] == 'actual']
+                recent_users = list(set(recent_users))
+                return render_template('app.html', uname=uname, recent_users=list(recent_users))
             
             
 
