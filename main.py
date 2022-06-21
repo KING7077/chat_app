@@ -39,11 +39,20 @@ class App(Flask):
             uname = request_['uname']
         except Exception as e:
             print(e)
-            uname = None
+            try:
+                uname = self.logins[request.environ['HTTP_X_FORWARDED_FOR']]
+            except Exception as e:
+                print(e)
+                uname = None
+                
         if uname is None:
             return redirect('/login')
-
-        passw = request_['pass']
+        
+        try:
+            passw = request_['pass']
+        except Exception as e:
+            passw = None
+            
         ref = request.referrer.split('/')
 
         if ref[3] == 'login':
@@ -85,6 +94,17 @@ class App(Flask):
                 self.logins[request.environ['HTTP_X_FORWARDED_FOR']] = uname
             recent_users = []
             return render_template('app.html', uname=uname, recent_users=recent_users)
+        
+        elif uname is not None and passw is None:
+            recent_users = collection2.find({'sender': uname})
+            recent_users = [recent_user['receiver']
+                            for recent_user in recent_users if recent_user['id'] == 'actual']
+            recent_users = list(set(recent_users))
+
+            return render_template('app.html', uname=uname, recent_users=list(recent_users))
+        else:
+            return redirect('/login')
+            
 
     def people(self, author, user):
         try:
