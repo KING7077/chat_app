@@ -39,6 +39,7 @@
           <b style="color: white">Username:</b>
           {% else %}
           <b style="color: white">Username: {{ error }}</b>
+          {% endif %}
           <input
             type="text"
             placeholder="Enter Username"
@@ -52,6 +53,7 @@
           <b style="color: white"
             >Password: <i style="color: red">{{ error }}</i></b
           >
+          {% endif %}
           <input
             type="password"
             placeholder="Enter Password"
