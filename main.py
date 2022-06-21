@@ -44,8 +44,10 @@ class App(Flask):
             except Exception as e:
                 print(e)
                 uname = None
-                
-        if uname is None:
+
+        ref = request.referrer.split('/')
+
+        if uname is None and ref[3] != 'app':
             return redirect('/login')
         
         try:
@@ -53,7 +55,6 @@ class App(Flask):
         except Exception as e:
             passw = None
             
-        ref = request.referrer.split('/')
 
         if ref[3] == 'login':
             hash_object = hashlib.sha256(bytes(passw, 'utf-8'))
