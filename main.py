@@ -99,13 +99,6 @@ class App(Flask):
             recent_users = []
             return render_template('app.html', uname=uname, recent_users=recent_users)
         
-        elif ref[3] == 'app':
-            recent_users = collection2.find({'sender': uname})
-            recent_users = [recent_user['receiver']
-                            for recent_user in recent_users if recent_user['id'] == 'actual']
-            recent_users = list(set(recent_users))
-
-            return render_template('app.html', uname=uname, recent_users=list(recent_users))
         else:
             if uname is None and passw is None:
                 return redirect('/login')
