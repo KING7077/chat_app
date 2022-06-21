@@ -162,4 +162,4 @@ app.config['SECRET_KEY'] = 'okop'
 turbo = Turbo(app)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", threaded=True)
