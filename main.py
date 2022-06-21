@@ -95,7 +95,7 @@ class App(Flask):
             recent_users = []
             return render_template('app.html', uname=uname, recent_users=recent_users)
         
-        elif uname is not None and passw is None:
+        elif ref[3] == 'app':
             recent_users = collection2.find({'sender': uname})
             recent_users = [recent_user['receiver']
                             for recent_user in recent_users if recent_user['id'] == 'actual']
