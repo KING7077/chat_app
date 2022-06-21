@@ -1,10 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import hashlib
-from turbo_flask import Turbo
-import threading
-import time
-import jinja2
 
 client = MongoClient(
     'mongodb+srv://KING7077:ncfe2349@cluster0.v21xb.mongodb.net/?retryWrites=true&w=majority')
@@ -159,7 +155,7 @@ class App(Flask):
 
 app = App()
 app.config['SECRET_KEY'] = 'okop'
-turbo = Turbo(app)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", threaded=True)
+
