@@ -118,6 +118,7 @@ class App(Flask):
         if author == user:
             return redirect('/app')
         if author != logged:
+            print(logged)
             return redirect('/app')
 
         users = db['userdata']
