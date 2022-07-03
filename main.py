@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import hashlib
 
 client = MongoClient(
-    'mongodb+srv://KING7077:ncfe2349@cluster0.v21xb.mongodb.net/?retryWrites=true&w=majority')
+    'mongodb+srv://KING7077:ncdw349@cluster0.v21xb.mongodb.net/?retryWrites=true&w=majority')
 db = client['userdata']
 
 
